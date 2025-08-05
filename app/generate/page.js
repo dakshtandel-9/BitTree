@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function Generate() {
 
-    const [link, setLink] = useState("");
+    const [link, setLink] = useState([{ link: "", linktext: "" }]);
     const [linktext, setLinkText] = useState("");
     const [handle, setHandle] = useState("");
     const [pic, setPic] = useState("");
@@ -34,10 +34,6 @@ function Generate() {
         const result = await r.json();
 
         toast(result.message)
-        setHandle("")
-        setLink("")
-        setLinkText("")
-        setPic("")
     }
 
 
@@ -52,13 +48,15 @@ function Generate() {
                         <input value={handle || ""} onChange={e => { setHandle(e.target.value) }} type="text" placeholder='Choose a Handle' className='bg-white px-4 py-2 focus:outline-blue-500 rounded-3xl' />
                     </div>
                     <h2 className='font-semibold  text-2xl'>Step 2: Add Links</h2>
-                    <div className="mx-4 flex gap-2">
-                        <input value={link || ""} onChange={e => { setLink(e.target.value) }} type="text" placeholder='Enter link text' className='bg-white px-4 py-2 focus:outline-blue-500 rounded-3xl' />
-                        <input value={linktext || ""} onChange={e => { setLinkText(e.target.value) }} type="text" placeholder='Enter link' className='bg-white px-4 py-2 focus:outline-blue-500 rounded-3xl' />
+                    {links && links.map((item, index) => {
+                        return <div key={index} className="mx-4 flex gap-2">
+                            <input value={item.link || ""} onChange={e => { setLink(e.target.value) }} type="text" placeholder='Enter link text' className='bg-white px-4 py-2 focus:outline-blue-500 rounded-3xl' />
+                            <input value={item.linktext || ""} onChange={e => { setLinkText(e.target.value) }} type="text" placeholder='Enter link' className='bg-white px-4 py-2 focus:outline-blue-500 rounded-3xl' />
 
-                        <button onClick={() => { addLink(linktext, link, handle) }} className='bg-pink-700 text-white font-bold rounded-3xl mx-2 p-5 py-2'>AddLink</button>
 
-                    </div>
+                        </div>
+                    })}
+                    <button onClick={() => { addLink(linktext, link, handle) }} className='bg-pink-700 text-white font-bold rounded-3xl mx-2 p-5 py-2'>AddLink</button>
 
 
                     <h2 className='font-semibold  text-2xl'>Step 3:Add Picture and Finalize </h2>
